@@ -143,10 +143,10 @@ const Contact = () => {
   
       // Send email using EmailJS
       await emailjs.sendForm(
-        "service_9x4u1qc",
-        "template_94szrck",
+        "service_mgnua9b",
+        "template_sxztsgm",
         formRef.current,
-        "sTwVr3fZmNYdaP9m5"
+        "ZMzBKSW5CJICogqs_"
       );
   
       setOpenSnackbar(true);
