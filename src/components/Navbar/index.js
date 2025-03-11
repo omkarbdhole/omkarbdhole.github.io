@@ -1,59 +1,110 @@
-import React from 'react'
-import { Nav, NavLink, NavbarContainer, Span, NavLogo, NavItems, GitHubButton, ButtonContainer, MobileIcon, MobileMenu, MobileNavLogo, MobileLink } from './NavbarStyledComponent'
-import { DiCssdeck } from 'react-icons/di';
-import { FaBars } from 'react-icons/fa';
-import { Bio } from '../../data/constants';
-import { Close, CloseRounded } from '@mui/icons-material';
-import { useTheme } from 'styled-components';
+import React, { useState, useEffect } from "react";
+import {
+  Nav,
+  NavLink,
+  NavbarContainer,
+  Span,
+  NavLogo,
+  NavItems,
+  GitHubButton,
+  ButtonContainer,
+  MobileIcon,
+  MobileMenu,
+  MobileNavLogo,
+  MobileLink,
+} from "./NavbarStyledComponent";
+import { FaBars } from "react-icons/fa";
+import { Close, CloseRounded } from "@mui/icons-material";
+import { useTheme } from "styled-components";
+import { fetchBioData } from "../../api/supabase";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const theme = useTheme()
+  const [isOpen, setIsOpen] = useState(false);
+  const [bioData, setBioData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const theme = useTheme();
+
+  useEffect(() => {
+    const getBioData = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await fetchBioData();
+        if (!error && data) {
+          setBioData(data);
+        }
+      } catch (error) {
+        console.error("Error fetching bio data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getBioData();
+  }, []);
+
   return (
     <Nav>
       <NavbarContainer>
-        <NavLogo >
-          <h3 style={{ color: `white` }}>Omkar Dhole</h3>
+        <NavLogo>
+          <h3 style={{ color: `white` }}>
+            {loading ? "Loading..." : bioData?.name || "Portfolio"}
+          </h3>
         </NavLogo>
         <MobileIcon>
-          <FaBars onClick={() => {
-            setIsOpen(!isOpen)
-          }} />
+          <FaBars onClick={() => setIsOpen(!isOpen)} />
         </MobileIcon>
         <NavItems>
-          <NavLink href='#about'>About</NavLink>
-          <NavLink href='#skills'>Skills</NavLink>
-          {/* <NavLink href='#experience'>Experience</NavLink> */}
-          <NavLink href='#projects'>Projects</NavLink>
-          <NavLink href='#education'>Education</NavLink>
+          <NavLink href="#about">About</NavLink>
+          <NavLink href="#skills">Skills</NavLink>
+          {/* <NavLink href="#experience">Experience</NavLink> */}
+          <NavLink href="#projects">Projects</NavLink>
+          <NavLink href="#education">Education</NavLink>
         </NavItems>
         <ButtonContainer>
-          <GitHubButton href={Bio.github} target="_blank">Github Profile</GitHubButton>
+          <GitHubButton
+            href={bioData?.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            disabled={!bioData?.github}
+          >
+            Github Profile
+          </GitHubButton>
         </ButtonContainer>
-        {
-          isOpen &&
+        {isOpen && (
           <MobileMenu isOpen={isOpen}>
-            <MobileLink href="#about" onClick={() => {
-              setIsOpen(!isOpen)
-            }}>About</MobileLink>
-            <MobileLink href='#skills' onClick={() => {
-              setIsOpen(!isOpen)
-            }}>Skills</MobileLink>
-            {/* <MobileLink href='#experience' onClick={() => {
-              setIsOpen(!isOpen)
-            }}>Experience</MobileLink> */}
-            <MobileLink href='#projects' onClick={() => {
-              setIsOpen(!isOpen)
-            }}>Projects</MobileLink>
-            <MobileLink href='#education' onClick={() => {
-              setIsOpen(!isOpen)
-            }}>Education</MobileLink>
-            <GitHubButton style={{padding: '10px 16px',background: `${theme.primary}`, color: 'white',width: 'max-content'}} href={Bio.github} target="_blank">Github Profile</GitHubButton>
+            <MobileLink href="#about" onClick={() => setIsOpen(false)}>
+              About
+            </MobileLink>
+            <MobileLink href="#skills" onClick={() => setIsOpen(false)}>
+              Skills
+            </MobileLink>
+            <MobileLink href="#experience" onClick={() => setIsOpen(false)}>
+              Experience
+            </MobileLink>
+            <MobileLink href="#projects" onClick={() => setIsOpen(false)}>
+              Projects
+            </MobileLink>
+            <MobileLink href="#education" onClick={() => setIsOpen(false)}>
+              Education
+            </MobileLink>
+            <GitHubButton
+              style={{
+                padding: "10px 16px",
+                background: `${theme.primary}`,
+                color: "white",
+                width: "max-content",
+              }}
+              href={bioData?.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              disabled={!bioData?.github}
+            >
+              Github Profile
+            </GitHubButton>
           </MobileMenu>
-        }
+        )}
       </NavbarContainer>
     </Nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

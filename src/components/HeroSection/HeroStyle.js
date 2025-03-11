@@ -1,5 +1,14 @@
-import styled from "styled-components";
-import _default from "../../themes/default";
+import styled, { keyframes } from "styled-components";
+import { motion } from "framer-motion";
+
+const shimmer = keyframes`
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+`;
 
 export const HeroContainer = styled.div`
   background: ${({ theme }) => theme.card_light};
@@ -93,17 +102,32 @@ export const HeroRightContainer = styled.div`
 `;
 
 export const Img = styled.img`
-  position: relative;
   width: 100%;
   height: 100%;
+  position: relative;
+  border-radius: 50%;
   max-width: 400px;
   max-height: 400px;
-  border-radius: 50%;
-  border: 2px solid ${({ theme }) => theme.primary};
+  object-fit: cover;
+  border: 4px solid ${({ theme }) => theme.primary + "20"};
+  padding: 8px;
+  background: linear-gradient(
+    225deg,
+    ${({ theme }) => theme.primary + "20"} 0%,
+    ${({ theme }) => theme.primary + "10"} 100%
+  );
+  box-shadow: 0 0 20px ${({ theme }) => theme.primary + "50"};
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.primary + "50"};
+    box-shadow: 0 0 30px ${({ theme }) => theme.primary + "80"};
+    transform: scale(1.02);
+  }
 
   @media (max-width: 768px) {
-    max-width: 400px;
-    max-height: 400px;
+    max-width: 300px;
+    max-height: 300px;
   }
 
   @media (max-width: 640px) {
@@ -200,4 +224,72 @@ export const ResumeButton = styled.a`
         font-size: 18px;
     } 
 
+`;
+
+export const FloatingImage = styled(motion.div)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: float 6s ease-in-out infinite;
+  position: relative;
+  filter: drop-shadow(0px 5px 15px rgba(0, 0, 0, 0.25));
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+`;
+
+export const LoadingContainer = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: ${({ theme }) => theme.card_light};
+  color: ${({ theme }) => theme.text_primary};
+  font-size: 1.5rem;
+`;
+
+export const ImageContainer = styled.div`
+  position: relative;
+  border-radius: 50%;
+  &::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: linear-gradient(
+      45deg,
+      ${({ theme }) => theme.primary + "20"} 0%,
+      transparent 100%
+    );
+    border-radius: 50%;
+    z-index: -1;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+    100% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+  }
 `;
