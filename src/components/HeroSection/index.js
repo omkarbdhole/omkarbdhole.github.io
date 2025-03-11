@@ -41,7 +41,7 @@ const HeroSection = () => {
       } else {
         setBioData({
           ...data,
-          image: data.image || ""
+          image: data.image || "",
         });
       }
     };
@@ -87,7 +87,10 @@ const HeroSection = () => {
             <HeroRightContainer>
               <motion.div {...headContentAnimation}>
                 <Tilt>
-                  <Img src={bioData.image || "default-image.jpg"} alt={bioData.name} />
+                  <Img
+                    src={bioData.image || "default-image.jpg"}
+                    alt={bioData.name}
+                  />
                 </Tilt>
               </motion.div>
             </HeroRightContainer>
@@ -99,9 +102,6 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-
-
-
 
 // import React, { useEffect, useState } from "react";
 // import { supabase } from "../../supabaseClient";
@@ -188,40 +188,12 @@ export default HeroSection;
 //             </HeroRightContainer>
 //           </HeroInnerContainer>
 //         </motion.div>
-//       </HeroContainer> 
+//       </HeroContainer>
 //     </div>
 //   );
 // };
 
 // export default HeroSection;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React from "react";
 // import HeroBgAnimation from "../HeroBgAnimation";
@@ -298,7 +270,7 @@ export default HeroSection;
 //             </HeroRightContainer>
 //           </HeroInnerContainer>
 //         </motion.div>
-//       </HeroContainer> 
+//       </HeroContainer>
 //     </div>
 //   );
 // };
